@@ -1,0 +1,25 @@
+services:
+  cassandra:
+    image: cassandra:4.1
+    container_name: my-cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=webflux-cluster
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-cassandra
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-cassandra
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin

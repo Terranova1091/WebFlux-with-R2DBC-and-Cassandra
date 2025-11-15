@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: webFluxCassandra
+
+
+  cassandra:
+    keyspace-name: bank_db
+    contact-points: localhost
+    port: 9042
+    local-datacenter: datacenter1

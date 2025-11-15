@@ -1,0 +1,90 @@
+{
+  "dashboard": {
+    "title": "Spring WebFlux Monitoring",
+    "tags": ["spring", "webflux"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "HTTP Requests Rate",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_count[1m])",
+            "legendFormat": "{{method}} {{status}}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Response Time P95",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_server_requests_seconds_bucket[1m]))",
+            "legendFormat": "p95",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "decimals": 3
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "JVM Memory",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "jvm_memory_used_bytes{area=\"heap\"}",
+            "legendFormat": "Heap Used",
+            "refId": "A"
+          },
+          {
+            "expr": "jvm_memory_max_bytes{area=\"heap\"}",
+            "legendFormat": "Heap Max",
+            "refId": "B"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Thread Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "jvm_threads_live",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 8},
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short"
+          }
+        }
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "5s"
+  },
+  "overwrite": false
+}
